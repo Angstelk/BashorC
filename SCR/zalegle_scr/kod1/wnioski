@@ -1,0 +1,22 @@
+1
+Program tworzy wątki w koejności od 0 do n i w tej samej kolejności wątki wyświetlają komunikaty na wyjściu.
+
+2
+Kolejność wyświetlania się komunikatów z wątków jest przypadkowa. Przy większej lości wątków da się zauważyć działanie 
+planisty, który przydziela czas procesora. Wątkom programu czas nie jest przydzielany ze tylko  względu na czas powstania,
+co skutkuje wykonywaniem się wątków w sposób asynchroniczny.
+
+3
+W programie bug3 nieprawidłowo przekazano argument do funkcji PrintHello. Zaobserwowano ośmiokrotne wyświetlenie się komunikatu "hello from thread 8". Poprawiono program usuwając referencję do zmiennej t; teraz program wita nas od 0 do 7; 
+
+4
+Program informuje nas o tworzeniu i działaniu wątków ale nie sygnalizuje o kończeniu pracy wątków.
+Problem rozwiązuje pthread_exit na końcu wątku i w funkcji main. Jeśli się jej nie doda to funkcja main zakończy działanie wątków nim wykonają swoją pracę. 
+
+5
+Program join.c zwracał  te same dane a funkcja main nie kończyła się przed wykonaniem ostatniego wątku, przy  tworzeniu unikalnej wartości dla każdego wątku (poprzed dodanie numeru wątku do zmiennej result) sytuacja się powtórzyła. 
+W programie detached.c funkcja main kończy się przed końcem pracy wątków. 
+Za tę różnice odpowiada typ wątków (joinable albo detached ), zasoby wątków joinable są uwalniane przez fukcje pthread_join, to ona odpowiada za oczekiwanie na zakończenie się wszystkich wątków przed końcem funkji main, jest to mechanizm synchronizacji.
+
+6. 
+W programie nastpowało naruszenie pamięci. Wątki wymagały więcej pamięci niż standardowo jest alokowane, rozwiązaniem problemu jest funkcja pthread_att_setstacksize()  i podanie jej wyniku w argumejcie funkcj pthread_create(). 

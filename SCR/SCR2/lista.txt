@@ -1,0 +1,12 @@
+./lista.txt
+./kokoko.tar.gz
+./skrypt.sh
+./date.sh
+./mail.sh
+./ofer/pliki
+./find.sh
+./-m.tar.gz
+./mail.txt
+./.tar.gz
+./find2.sh
+./maile.txt

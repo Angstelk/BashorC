@@ -1,0 +1,3 @@
+
+renice -n 15 -p [pid]
+htop -u ajozefcz

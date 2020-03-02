@@ -1,0 +1,10 @@
+Na linuksie informacje o procesach przechwuje system pseudoplikow proc.
+
+1) Wchodzac w folder o numerze pid porzanego procesu i pozniej w status mozna odczytac maski roznych sygnalów;
+SigBlk- zablokowane sygnały
+SigIgn- ignorowane sygnały 
+SigCgt- przechwycone 
+
+Konwertując bitmaske z hexa na bin mozna odczytac które sygnały były jak potraktowane.
+
+fd mówi które pliki zostały otwarte przez proces

@@ -1,0 +1,180 @@
+1.Analiza programu wypisujacego tekst na ekran przy pomocy truss.
+Wykonujac polecnie truss ~/SCR/SCR5/Z3/while_print
+dostaje taki output :
+
+write(1, " A A A A A A   T R U S  ".., 13)      = 13
+AAAAAA TRUS 
+write(1, " A A A A A A   T R U S  ".., 13)      = 13
+AAAAAA TRUS 
+write(1, " A A A A A A   T R U S  ".., 13)      = 13
+AAAAAA TRUS 
+write(1, " A A A A A A   T R U S  ".., 13)      = 13
+AAAAAA TRUS 
+write(1, " A A A A A A   T R U S  ".., 13)      = 13
+
+Mozna zauwazyc wywolanie syscalla write ktory wypisuje 13 bajtow na plik oo df 1 (stoutput).
+
+2. Lokalizacja plikow konfiguracyjnych, ktore powloka bash probuje odczytac przy starcie
+Wywolanie komendy truss -t open bash
+bash-4.3$ truss -t open bash
+open("/var/ld/ld.config", O_RDONLY)             = 3
+open("/lib/libc.so.1", O_RDONLY)                = 3
+open64("/dev/tty", O_RDWR|O_NONBLOCK)           = 3
+open("/opt/csw/lib/sparcv9/libintl.so.8", O_RDONLY) = 3
+open("/opt/csw/lib/sparcv8/libintl.so.8", O_RDONLY) = 3
+open("/opt/csw/lib/sparcv9/libiconv.so.2", O_RDONLY) = 3
+open("/opt/csw/lib/sparcv8/libiconv.so.2", O_RDONLY) = 3
+open("/platform/SUNW,Sun-Fire-880/lib/libc_psr.so.1", O_RDONLY) = 3
+open("/lib/libnsl.so.1", O_RDONLY)              = 3
+open64("/var/run/name_service_door", O_RDONLY)  = 3
+open64("/etc/bash.bashrc", O_RDONLY)            Err#2 ENOENT
+open64("/home/ajozefcz/.bashrc", O_RDONLY)      Err#2 ENOENT
+open64("/home/ajozefcz/.bash_history", O_RDONLY) = 4
+open64("/home/ajozefcz/.bash_history", O_RDONLY) = 4
+open("/lib/libcurses.so.1", O_RDONLY)           = 4
+open("/usr/share/lib/terminfo//x/xterm-256color", O_RDONLY) Err#2 ENOENT
+
+Wszystkie otwierane pliki sa argumentami syscalla open
+
+3.Liczenie wywolan funkcji printf podczas wywolania ls 
+truss -t write ls
+out :
+analiza_print  outfile        polecenia      print          print_tekst.c  przygotowanie  while_add      while_print    while_print.c
+write(1, " a n a l i z a _ p r i n".., 134)     = 134
+
+printf wykonuje sie jeden raz
+
+4. bash-4.3$ truss -t open vim polecenia       
+bash-4.3$ truss -t open vim polecenia       
+open("/var/ld/ld.config", O_RDONLY)             = 3
+open("/lib/libc.so.1", O_RDONLY)                = 3
+open("/opt/csw/lib/sparcv9/libncurses.so.6", O_RDONLY) = 3
+open("/opt/csw/lib/sparcv8/libncurses.so.6", O_RDONLY) = 3
+open("/opt/csw/lib/sparcv9/libintl.so.9", O_RDONLY) = 3
+open("/opt/csw/lib/sparcv8/libintl.so.9", O_RDONLY) = 3
+open("/opt/csw/lib/sparcv9/libgcc_s.so.1", O_RDONLY) = 3
+open("/opt/csw/lib/sparcv8/libgcc_s.so.1", O_RDONLY) = 3
+open("/platform/SUNW,Sun-Fire-880/lib/libc_psr.so.1", O_RDONLY) = 3
+open64("/opt/csw/share/terminfo/x/xterm-256color", O_RDONLY) = 3
+open64(".", O_RDONLY)                           = 3
+open64("/opt/csw/share/vim/vimrc", O_RDONLY)    = 3
+open64("/opt/csw/etc/vim/vimrc", O_RDONLY|O_NONBLOCK) Err#2 ENOENT
+open64("/etc/opt/csw/vim/vimrc", O_RDONLY|O_NONBLOCK) Err#2 ENOENT
+open64(".", O_RDONLY)                           = 3
+open64("/home/ajozefcz/.vimrc", O_RDONLY)       Err#2 ENOENT
+open64("/home/ajozefcz/_vimrc", O_RDONLY)       Err#2 ENOENT
+open64(".", O_RDONLY)                           = 3
+open64("/home/ajozefcz/.vim/vimrc", O_RDONLY)   Err#2 ENOENT
+open64(".", O_RDONLY)                           = 3
+open64("/home/ajozefcz/.exrc", O_RDONLY)        Err#2 ENOENT
+open64(".", O_RDONLY)                           = 3
+open64("/opt/csw/share/vim/vim80/defaults.vim", O_RDONLY) = 3
+open64(".", O_RDONLY)                           = 4
+open64("/opt/csw/share/vim/vim80/syntax/syntax.vim", O_RDONLY) = 4
+open64(".", O_RDONLY)                           = 5
+open64("/opt/csw/share/vim/vim80/syntax/synload.vim", O_RDONLY) = 5
+open64(".", O_RDONLY)                           = 6
+open64("/opt/csw/share/vim/vim80/syntax/syncolor.vim", O_RDONLY) = 6
+open64("/opt/csw/share/vim/vim80/rgb.txt", O_RDONLY) = 7
+open64(".", O_RDONLY)                           = 5
+open64("/opt/csw/share/vim/vim80/filetype.vim", O_RDONLY) = 5
+open64(".", O_RDONLY)                           = 4
+open64("/opt/csw/share/vim/vim80/filetype.vim", O_RDONLY) = 4
+open64(".", O_RDONLY)                           = 4
+open64("/opt/csw/share/vim/vim80/ftplugin.vim", O_RDONLY) = 4
+open64(".", O_RDONLY)                           = 4
+open64("/opt/csw/share/vim/vim80/indent.vim", O_RDONLY) = 4
+open64(".", O_RDONLY)                           = 3
+open64("/opt/csw/share/vim/vim80/plugin/getscriptPlugin.vim", O_RDONLY) = 3
+open64(".", O_RDONLY)                           = 3
+open64("/opt/csw/share/vim/vim80/plugin/gzip.vim", O_RDONLY) = 3
+open64(".", O_RDONLY)                           = 3
+open64("/opt/csw/share/vim/vim80/plugin/logiPat.vim", O_RDONLY) = 3
+open64(".", O_RDONLY)                           = 3
+open64("/opt/csw/share/vim/vim80/plugin/manpager.vim", O_RDONLY) = 3
+open64(".", O_RDONLY)                           = 3
+open64("/opt/csw/share/vim/vim80/plugin/matchparen.vim", O_RDONLY) = 3
+open64(".", O_RDONLY)                           = 3
+open64("/opt/csw/share/vim/vim80/plugin/netrwPlugin.vim", O_RDONLY) = 3
+open64(".", O_RDONLY)                           = 3
+open64("/opt/csw/share/vim/vim80/plugin/rrhelper.vim", O_RDONLY) = 3
+open64(".", O_RDONLY)                           = 3
+open64("/opt/csw/share/vim/vim80/plugin/spellfile.vim", O_RDONLY) = 3
+open64(".", O_RDONLY)                           = 3
+open64("/opt/csw/share/vim/vim80/plugin/tarPlugin.vim", O_RDONLY) = 3
+open64(".", O_RDONLY)                           = 3
+open64("/opt/csw/share/vim/vim80/plugin/tohtml.vim", O_RDONLY) = 3
+open64(".", O_RDONLY)                           = 3
+open64("/opt/csw/share/vim/vim80/plugin/vimballPlugin.vim", O_RDONLY) = 3
+open64(".", O_RDONLY)                           = 3
+open64("/opt/csw/share/vim/vim80/plugin/zipPlugin.vim", O_RDONLY) = 3
+open64("/home/ajozefcz/.viminfo", O_RDONLY)     = 3
+
+
+ --------------------------------close--------------------------------------------------
+bash-4.3$ truss -t close vim polecenia 
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(4)                                        = 0
+close(5)                                        = 0
+close(6)                                        = 0
+close(7)                                        = 0
+close(6)                                        = 0
+close(5)                                        = 0
+close(5)                                        = 0
+close(5)                                        = 0
+close(4)                                        = 0
+close(4)                                        = 0
+close(4)                                        = 0
+close(4)                                        = 0
+close(4)                                        = 0
+close(4)                                        = 0
+close(4)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(3)                                        = 0
+close(5)                                   = 0
+
+Wnioski : Vim otwiera i zamyka wiele plikow podczas dzialania programu, ale plik edytowany jest otwierany i zamykany tylko raz.
+

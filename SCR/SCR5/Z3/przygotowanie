@@ -1,0 +1,18 @@
+-r fd, fd1 ,... 
+Przyjmuje za argument identyfikator pliku.
+Pokazuje pelna zawawartosc I/O bufora dla kazdej operacji read. OUTPUT jest w postaci 32 bitowej informacji na wiersz a kazdy bit jest ukazany jak znak ascii razem ze znakami  z C  \t tab \n newline. Jesli nie dasie przedstawic tego jako ASCI to dane sa reprezentowane jako 2 znakowa zmienna hexadecymalna. 
+
+-s signal,signal1,...
+Przyjmuje nazwe sygnalu jako parametr. Przyjety sygnaljest sledzony albo wykluczony ze sledzenia. Zwraca szlaki jakimi zostal wyslany sygnal. Sygnaly moga byc podane do parametru poprzez numer, nazwe, jak przed lista jest ! to wyswitla zaprzeczenie 
+
+-t [!]syscall
+Syscalle do sledzenia albo wylaczenia sledzenia.
+
+
+
+-u 
+parametr do sledzenia funkcji,programow  z poziomu uzytkownika. mo¿na sledzic bilbioteki, 
+
+-w fd
+
+Pokazuje zawartosc bufora I/O z perspektywy zapisu. po fd. analogicznie do r

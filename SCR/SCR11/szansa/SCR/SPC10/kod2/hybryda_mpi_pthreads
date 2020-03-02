@@ -1,0 +1,15 @@
+MPI - Message Passing Interface to protokół komunikacyjny będący standardem przesyłania komunikatów pomiędzy procesami działajacymi równolegle. Jego głównymi cechami jest skalowalność i przenośność. 
+
+
+Program Mpithreads_serial tworzy strukturę danych DOTDATA, która zawiera wskaźnik na 2 tablice typu double, których długość jest zdefiniowana w define VECLEN, zmienną typu double mysum, będzie przechowywała wynik operacji sumowania elementów tablic. W programieznajduje się również funkcja dorprod (argument to void i typ zwracany to wskaźnik na void, będzie przekazywana później do funkcji tworzącej wątki) oblicza ona sumę iloczynów kolejnych elementów tablic.
+
+1. Mpithreads_serial
+W tym programie obliczanie sumy iloczynów tablic jest realizowane w funkcji main, bezużycia mechanizmu wątków. Wynik sumy to 100.
+
+2.Mpithreads_threads
+W programie tworzone jest 8 wątków, każdy z nich liczy w funkcji dotprod liczy sumę iloczynów elementów, suma obliczona w wątku jest ododawana do globalnej zmienej sum, potraktowanej mechanizmem synchronizacji mutex. Suma 8 wątków * 100, 800.
+
+3.Mpithreads_mpi
+Program jest bardzo podobny do tego z punktu pierwszego, tylko że inicjalizuje działanie MPI. Srun nie działa,
+
+4.  

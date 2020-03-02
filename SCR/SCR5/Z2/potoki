@@ -1,0 +1,28 @@
+pokazac ze one faktyznie sa miedzy soba uzaleznione analizujac pid dekryptory io,
+Polecenie do sprawdzenia pidów procesów w potoku:
+ 
+ps -u ajozefcz xjf
+
+Wchodząc w /proc/<pid_procesu>/fd lub /proc/<pid_procesu>/fdinfo można zobaczyć które pliki otwierają procesy o danym PID.
+Okazuje się że dla procesu cat | cat | ./print.sh, dwa z 2 procesów otwierają tylko pliki o dekryptorach 0, 1 i 2 , które odpowiadają sttdin stdout i stderr,
+trzeci z nich otwiera dodatkowo plik 255, który okazuje się plikem tekstowym skryptu. Po wywołaniu polecenia ls -l można zobaczyć
+ajozefcz@panamint:/proc/60299/fd$ ls -l
+total 0
+lr-x------ 1 ajozefcz ar2017 64 Dec  2 22:56 0 -> pipe:[36923810]
+lrwx------ 1 ajozefcz ar2017 64 Dec  2 22:56 1 -> /dev/pts/41
+lrwx------ 1 ajozefcz ar2017 64 Dec  2 22:56 2 -> /dev/pts/41
+lr-x------ 1 ajozefcz ar2017 64 Dec  2 22:56 255 -> /home/ajozefcz/SCR/SCR5/Z2/print.sh
+ 	  
+ajozefcz@panamint:/proc/60298/fd$ ls -l
+total 0
+lr-x------ 1 ajozefcz ar2017 64 Dec  2 22:53 0 -> pipe:[36923808]
+l-wx------ 1 ajozefcz ar2017 64 Dec  2 22:53 1 -> pipe:[36923810]
+lrwx------ 1 ajozefcz ar2017 64 Dec  2 22:53 2 -> /dev/pts/41
+
+ajozefcz@panamint:/proc/60297/fd$ ls -l
+total 0
+lrwx------ 1 ajozefcz ar2017 64 Dec  2 22:53 0 -> /dev/pts/41
+l-wx------ 1 ajozefcz ar2017 64 Dec  2 22:53 1 -> pipe:[36923808]
+lrwx------ 1 ajozefcz ar2017 64 Dec  2 22:53 2 -> /dev/pts/41
+
+Można zauważyć przekazywanie wyjścia na wejście w potoku 36923808 => 36923810, więc ten proses bedzie pośredniczacym między jednym catem a skryptem.

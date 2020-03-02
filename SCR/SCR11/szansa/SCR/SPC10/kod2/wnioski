@@ -1,0 +1,17 @@
+1. MUTEXY 
+Program bug6.c nie działa poprawnie (suma nie jest poprawnie wyliczona), bo występuje wyścig o zasób, zmienną sum. 
+Rozwiązaniem problemu jest oddanie do programu mechanizmu wzajemnego wykluczania (muetxu) na tę globalną zmienną.
+Rozwiązanie jest bardzo podobne do rozwiązania w dotprod_mutex.c, jednak mniej wydajne bo mutexem jest obłożona zmienna globlna sum,
+gdzie w dotprod_mutex.c została utworzona dodatkowa zmienna, która pozwala na szybsze wykonywania się związku bo wątki nie muszą czekać na zwolenienie globalnej zmiennej.
+Program arrayloops.c zastosował tę samą tehcnikę, który lepszy.
+
+2.ZMIENNE WARUNKOWE
+Program tworzy trzy wątki, dwa z nich inkrementują count a ostatnia sprawdza jego wartość. Jeśli zmienna osiągnie ustalony limit to wątek, w którym zmienna go osiągnęła,  sygnalizuje to wątkowi czekającemu. Po tym zdarzeniu wątek czekający modyfikuje count  dodając do niego 125, program trwa dopóty zmienna nie osiągnie kolejnego limitu TCOUNT.
+Program bug1 zawiesza się po osiągnięci wartości 20 przez zmienną count.
+Może to wynikać z faktu że sygnał o przekroczeniu zmiennej cout limitu jest wysyłany do jednego wątku oczekującego a nie wszystkich (reszta wątków czeka na sygnał więc pthread_join() nie może zaończyć ich działania), rozwiązaniem jest zastosowanie funkcji  pthread_cond_broadcast(), zamiast  pthread_cond_signal() (bug1_naprawa)
+Program bug4.c  w 2 wątkach dodaje do zmiennej globalnej finalresult wyniku lokalnych obliczeń i zwiększa licznik count, trzeci wątek czeka na osiągnięcie przez count progu (pozostałe dwa wątki wyślą mu sygnał gdy to się stanie) by zmodyfikować zmienną finalresult.
+Na wyjściu można zauważyć problem z synchronizacją w programie.  Sygnał z wątków inkrementujących count jest wysłany zanim w wątku oczekującym wywoła się funkcja oczekująca na sygnał cond_wait, co zawiesza program. 
+Jednym z rozwiązań jest sprawdzenie czy wartość count jest mniejsza od THRESHOLD przed wywołaniem funkcji pthread_cond_wait().
+
+3.MPI 
+

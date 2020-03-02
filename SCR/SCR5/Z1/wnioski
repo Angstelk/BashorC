@@ -1,0 +1,17 @@
+Program basic_loop zajmuje 1 miejsce pod względem zużycia zasobów procesora, 
+sleep_loop już się tak nie zachowuje.
+
+	if (signo == SIGUSR1){
+	flaga=0;		
+	printf("Otrzymano SIGUSR1 , \n koncze program");}
+	else if (signo == SIGUSR2){
+
+	printf("otrzymano SIGUSR2 , \n kontynuuje program");}
+	else if (signo == SIGTERM){
+	int z=1000;
+	printf("otrzymano SIGTERM , \n wstrzymuje na 1000 iteracji ");
+	while(z){
+		z--;}
+	}
+	else if (signo == SIGALRM){}
+Program reaguje poprawnie na syngały zwarte w obsłudze sygnałów.

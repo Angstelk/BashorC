@@ -1,0 +1,12 @@
+#!/bin/bash
+if [ -d $1 ]; then
+    if [[ 1 -eq "$2" ]] ; then chmod +w $1; else
+	chmod -w $1
+    fi
+    else
+	if [ -f $1 ]; then
+	    if [[ 1 -eq "$2" ]] ; then chmod +w $1; else
+		chmod -w $1
+	    fi
+	fi
+fi
